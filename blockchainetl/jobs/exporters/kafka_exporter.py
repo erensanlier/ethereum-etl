@@ -4,17 +4,25 @@ import logging
 
 from kafka import KafkaProducer
 
+from inspect import signature
+
 from blockchainetl.jobs.exporters.converters.composite_item_converter import CompositeItemConverter
 
 
 class KafkaItemExporter:
 
-    def __init__(self, output, item_type_to_topic_mapping, converters=()):
+    def __init__(self, output, output_config, item_type_to_topic_mapping, converters=()):
         self.item_type_to_topic_mapping = item_type_to_topic_mapping
         self.converter = CompositeItemConverter(converters)
         self.connection_url = self.get_connection_url(output)
         print(self.connection_url)
-        self.producer = KafkaProducer(bootstrap_servers=self.connection_url)
+
+        self.topic_prefix = output_config.get('topic_prefix') or ''
+
+        valid_params = signature(KafkaProducer).parameters.keys()
+        output_config = {k: v for k, v in output_config.items() if k in valid_params}
+
+        self.producer = KafkaProducer(bootstrap_servers=self.connection_url, **output_config)
 
     def get_connection_url(self, output):
         try:
@@ -34,7 +42,7 @@ class KafkaItemExporter:
         if item_type is not None and item_type in self.item_type_to_topic_mapping:
             data = json.dumps(item).encode('utf-8')
             logging.debug(data)
-            return self.producer.send(self.item_type_to_topic_mapping[item_type], value=data)
+            return self.producer.send(self.topic_prefix + self.item_type_to_topic_mapping[item_type], data)
         else:
             logging.warning('Topic for item type "{}" is not configured.'.format(item_type))
 
