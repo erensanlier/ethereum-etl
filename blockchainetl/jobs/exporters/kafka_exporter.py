@@ -17,6 +17,9 @@ class KafkaItemExporter:
         self.connection_url = self.get_connection_url(output)
         print(self.connection_url)
 
+        if output_config is not None and len(output_config) != 0:
+            print(output_config)
+
         self.topic_prefix = output_config.get('topic_prefix') or ''
 
         valid_params = signature(KafkaProducer).parameters.keys()
