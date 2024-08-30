@@ -4,8 +4,6 @@ import logging
 
 from kafka import KafkaProducer
 
-from inspect import signature
-
 from blockchainetl.jobs.exporters.converters.composite_item_converter import CompositeItemConverter
 
 
@@ -21,7 +19,12 @@ class KafkaItemExporter:
 
         logging.info('Kafka output config: {}'.format(output_config))
 
-        self.producer = KafkaProducer(bootstrap_servers=self.connection_url, **output_config)
+        configs = {
+            'bootstrap_servers': self.connection_url,
+            **output_config
+        }
+
+        self.producer = KafkaProducer(**configs)
 
     def get_connection_url(self, output):
         try:
