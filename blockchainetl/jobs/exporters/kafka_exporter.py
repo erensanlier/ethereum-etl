@@ -19,10 +19,12 @@ class KafkaItemExporter:
 
         self.topic_prefix = output_config.get('topic_prefix') or ''
 
+        logging.info('Kafka output config: {}'.format(output_config))
+
         valid_params = signature(KafkaProducer).parameters.keys()
         output_config = {k: v for k, v in output_config.items() if k in valid_params}
 
-        logging.info('Kafka output config: {}'.format(output_config))
+        logging.info('Kafka output config cleaned: {}'.format(output_config))
 
         self.producer = KafkaProducer(bootstrap_servers=self.connection_url, **output_config)
 
