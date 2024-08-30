@@ -24,6 +24,8 @@ class KafkaItemExporter:
             **output_config
         }
 
+        del configs['topic_prefix']
+
         self.producer = KafkaProducer(**configs)
 
     def get_connection_url(self, output):
