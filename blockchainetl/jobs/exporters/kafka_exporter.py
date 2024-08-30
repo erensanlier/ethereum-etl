@@ -17,13 +17,12 @@ class KafkaItemExporter:
         self.connection_url = self.get_connection_url(output)
         print(self.connection_url)
 
-        if output_config is not None and len(output_config) != 0:
-            print(output_config)
-
         self.topic_prefix = output_config.get('topic_prefix') or ''
 
         valid_params = signature(KafkaProducer).parameters.keys()
         output_config = {k: v for k, v in output_config.items() if k in valid_params}
+
+        logging.info('Kafka output config: {}'.format(output_config))
 
         self.producer = KafkaProducer(bootstrap_servers=self.connection_url, **output_config)
 
