@@ -47,6 +47,8 @@ def create_item_exporter(output, output_config_file):
                 output_config = yaml.safe_load(file)
         except Exception as e:
             raise ValueError('Error parsing output config file: ' + str(e))
+    else:
+        raise ValueError('Output config file not found: ' + output_config_file)
 
     item_exporter_type = determine_item_exporter_type(output)
     if item_exporter_type == ItemExporterType.PUBSUB:
