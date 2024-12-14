@@ -1,4 +1,4 @@
-# Google BiqQuery
+# Google BigQuery
 
 ## Querying in BigQuery
 
