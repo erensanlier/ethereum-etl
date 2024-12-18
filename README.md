@@ -27,7 +27,7 @@ Export blocks and transactions ([Schema](docs/schema.md#blockscsv), [Reference](
 --provider-uri https://mainnet.infura.io/v3/7aef3f0cd1f64408b163814b22cc643c
 ```
 
-Export ERC20 and ERC721 transfers ([Schema](docs/schema.md#token_transferscsv), [Reference](docs/commands.md##export_token_transfers)):
+Export ERC20 and ERC721 transfers ([Schema](docs/schema.md#token_transferscsv), [Reference](docs/commands.md#export_token_transfers)):
 
 ```bash
 > ethereumetl export_token_transfers --start-block 0 --end-block 500000 \
@@ -109,7 +109,7 @@ For the latest version, check out the repo and call
         > echo "Stream to console"
         > docker run ethereum-etl:latest stream --start-block 500000 --log-file log.txt
         > echo "Stream to Pub/Sub"
-        > docker run -v /path_to_credentials_file/:/ethereum-etl/ --env GOOGLE_APPLICATION_CREDENTIALS=/ethereum-etl/credentials_file.json ethereum-etl:latest stream --start-block 500000 --output projects/<your-project>/topics/crypto_ethereum
+        > docker run -v /path_to_credentials_file/:/ethereum-etl/ --env GOOGLE_APPLICATION_CREDENTIALS=/ethereum-etl/credentials_file.json ethereum-etl:latest stream --start-block 500000 --output projects/<your_project>/topics/crypto_ethereum
 
 If running on an Apple M1 chip add the `--platform linux/x86_64` option to the `build` and `run` commands e.g.:
 
