@@ -40,15 +40,16 @@ def create_item_exporters(outputs, output_config_files):
 def create_item_exporter(output, output_config_file):
 
     output_config = {}
-    if os.path.isfile(output_config_file):
-        try:
-            import yaml
-            with open(output_config_file, 'r') as file:
-                output_config = yaml.safe_load(file)
-        except Exception as e:
-            raise ValueError('Error parsing output config file: ' + str(e))
-    else:
-        raise ValueError('Output config file not found: ' + output_config_file)
+    if output_config_file:
+        if os.path.isfile(output_config_file):
+            try:
+                import yaml
+                with open(output_config_file, 'r') as file:
+                    output_config = yaml.safe_load(file)
+            except Exception as e:
+                raise ValueError('Error parsing output config file: ' + str(e))
+        else:
+            raise ValueError('Output config file not found: ' + output_config_file)
 
     item_exporter_type = determine_item_exporter_type(output)
     if item_exporter_type == ItemExporterType.PUBSUB:
